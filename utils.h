@@ -17,5 +17,5 @@ struct process{
 };
 
 void execute_unit_time();
-int execute_process(char* name, int execute_time, pid_t* pid);
+int execute_process(char* name, int execute_time, pid_t* pid, char* need_end_signal);
 void set_priority(int pid, int priority_level);

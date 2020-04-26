@@ -5,7 +5,10 @@ void execute_unit_time(){
 	volatile unsigned long i; for(i=0;i<1000000UL;i++); 
 }
 
-int execute_process(char* name, int execute_time, pid_t* pid){
+int execute_process(char* name, int execute_time, pid_t* pid, char* need_end_signal){
+	pid_t parent_pid = getpid();
+	char parent_pid_str[15];
+	sprintf(parent_pid_str, "%d", (int)parent_pid);
 	(*pid) = fork();
 	char execute_time_str[15];
 	cpu_set_t set_cpu_mask;
@@ -18,7 +21,7 @@ int execute_process(char* name, int execute_time, pid_t* pid){
 		case 0:
 			sched_setaffinity(getpid(), sizeof(cpu_set_t), &set_cpu_mask);
 			sprintf(execute_time_str, "%d", execute_time);
-			execl("./process", "./process", name, execute_time_str,(char *)0);
+			execl("./process", "./process", name, execute_time_str, parent_pid_str, need_end_signal, (char *)0);
 			break;
 		default:
 			set_priority((*pid), PRIORITY_LOW);

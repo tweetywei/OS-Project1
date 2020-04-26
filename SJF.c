@@ -16,6 +16,26 @@ heap_node* heap_array_head;
 int current_t;
 int next_priority_high = -1;
 
+void child_will_end(){
+	fprintf(stderr, "receive child signal\n");
+	int finished_id = next_run;
+	int expected_t = process_info[finished_id].ready_time + process_info[finished_id].execute_time;
+	while(ready_process < process_number && process_info[ready_process].ready_time < expected_t){
+		insertKey(&SJF_heap, ready_process, process_info[ready_process].execute_time);
+		execute_process(process_info[ready_process].name, process_info[ready_process].execute_time, &child_pid[ready_process], "YES");
+		ready_process++;
+	}
+	kill(child_pid[next_run], SIGUSR2);
+}
+
+void register_sigusr1(){
+	struct sigaction act;
+	act.sa_flags = 0;
+	act.sa_handler = child_will_end;
+	sigfillset(&act.sa_mask);
+	sigaction(SIGUSR1, &act, NULL);
+}
+
 void child_handler(int sig){
   pid_t chpid = wait(NULL);
   is_running = 0;
@@ -82,7 +102,7 @@ int main(){
 	SJF_heap.element_number = 0;
 	SJF_heap.capacity = process_number;
 	child_pid = (pid_t*)malloc(process_number * sizeof(pid_t));
-
+	register_sigusr1();
 	for(int i = 0; i < process_number; i++){
 		scanf("%s%d%d", process_info[i].name, &process_info[i].ready_time, &process_info[i].execute_time);
 	}
@@ -95,7 +115,7 @@ int main(){
 		int new_process_ready = 0;
 		while(ready_process < process_number && process_info[ready_process].ready_time == current_t){
 			insertKey(&SJF_heap, ready_process, process_info[ready_process].execute_time);
-			execute_process(process_info[ready_process].name, process_info[ready_process].execute_time, &child_pid[ready_process]);
+			execute_process(process_info[ready_process].name, process_info[ready_process].execute_time, &child_pid[ready_process], "YES");
 			new_process_ready = 1;
 			//fprintf(stderr, "execute child pid = %d\n", child_pid[ready_process]);
 			ready_process++;

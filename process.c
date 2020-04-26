@@ -3,13 +3,19 @@
 #include <string.h>
 #include "utils.h"
 #include <sys/syscall.h>
+#include <signal.h>
+
 
 int main(int argc, char* argv[]){
 	fprintf(stderr, "some child process executing...\n");
-	if(argc != 3){
+	if(argc < 4){
 		fprintf(stderr, "number of process parameter wrong!\n");
 		exit(1);
 	}
+	sigset_t set;
+	int sig;
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR2);
 	pid_t pid = getpid();
 	char name[33];
 	int execute_time;
@@ -24,5 +30,10 @@ int main(int argc, char* argv[]){
 	}
 	syscall(334, &end_sec, &end_nsec);
 	syscall(335, pid, start_sec, start_nsec, end_sec, end_nsec);
+	if(!strcmp(argv[4], "YES")){
+		pid_t parent_pid = (pid_t)atoi(argv[3]);
+		kill(parent_pid, SIGUSR1);
+		sigwait(&set, &sig);
+	}
 	return 0;
 }

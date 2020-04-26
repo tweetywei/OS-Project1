@@ -46,7 +46,7 @@ int main(){
 
 	for(int time = 0; next_run < process_number; time++){
 		while(ready_process < process_number && process_info[ready_process].ready_time == time){
-			execute_process(process_info[ready_process].name, process_info[ready_process].execute_time, &child_pid[ready_process]);
+			execute_process(process_info[ready_process].name, process_info[ready_process].execute_time, &child_pid[ready_process], "NO");
 			fprintf(stderr, "execute child pid = %d\n", child_pid[ready_process]);
 			ready_process++;
 		}
