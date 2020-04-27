@@ -53,8 +53,8 @@ int main(){
 		run_next_process();
 		execute_unit_time();
 	}
-	for(int i = 0; i < process_number; i++){
+	/*for(int i = 0; i < process_number; i++){
 		printf("%s %d\n", process_info[i].name, (int)child_pid[i]);
-	}
+	}*/
 	return 0;
 }
