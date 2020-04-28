@@ -12,16 +12,17 @@ int main(int argc, char* argv[]){
 		fprintf(stderr, "number of process parameter wrong!\n");
 		exit(1);
 	}
-	sigset_t set;
-	int sig;
-	sigemptyset(&set);
-	sigaddset(&set, SIGUSR2);
 	pid_t pid = getpid();
 	char name[33];
 	int execute_time;
 	strcpy(name, argv[1]);
 	execute_time = atoi(argv[2]);
 	printf("%s %ld\n", name, (long)pid);
+	fflush(stdout);
+	sigset_t set;
+	int sig;
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR2);	
 	long start_sec, start_nsec;
 	long end_sec, end_nsec;
 	syscall(334, &start_sec, &start_nsec);

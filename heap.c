@@ -75,9 +75,9 @@ void MinHeapify(heap* target_heap, int i)
     int l = left(i); 
     int r = right(i); 
     int smallest = i; 
-    if (l < target_heap->element_number && target_heap -> heap_array[l].value < target_heap -> heap_array[i].value) 
+    if (l < target_heap->element_number && (target_heap -> heap_array[l].value < target_heap -> heap_array[i].value || (target_heap -> heap_array[l].value == target_heap -> heap_array[i].value && target_heap -> heap_array[l].idx < target_heap -> heap_array[i].idx))) 
         smallest = l; 
-    if (r < target_heap->element_number && target_heap -> heap_array[r].value < target_heap -> heap_array[smallest].value) 
+    if (r < target_heap->element_number && (target_heap -> heap_array[r].value < target_heap -> heap_array[smallest].value || (target_heap -> heap_array[r].value == target_heap -> heap_array[smallest].value && target_heap -> heap_array[r].idx < target_heap -> heap_array[smallest].idx)))  
         smallest = r; 
     if (smallest != i) 
     { 
