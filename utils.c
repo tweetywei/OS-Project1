@@ -25,7 +25,7 @@ int execute_process(char* name, int execute_time, pid_t* pid, char* need_end_sig
 			break;
 		default:
 			set_priority((*pid), PRIORITY_LOW);
-			fprintf(stderr, "child pid is %d\n", (*pid));
+			//fprintf(stderr, "child pid is %d\n", (*pid));
 			break;
     }
 }
@@ -33,7 +33,7 @@ int execute_process(char* name, int execute_time, pid_t* pid, char* need_end_sig
 void set_priority(pid_t pid, int priority_level){
 	struct sched_param param;
 	param.sched_priority = priority_level;
-	fprintf(stderr, "set pid = %d to %d\n", (int)pid, priority_level);
+	//fprintf(stderr, "set pid = %d to %d\n", (int)pid, priority_level);
 	fflush(stderr);
 	if (sched_setscheduler(pid, SCHED_FIFO, &param) == -1){
             fprintf(stderr, "set priority wrong, pid is %d, err = %s?\n", pid, strerror(errno));

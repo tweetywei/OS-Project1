@@ -7,7 +7,7 @@
 
 
 int main(int argc, char* argv[]){
-	fprintf(stderr, "some child process executing...\n");
+	//fprintf(stderr, "some child process executing...\n");
 	if(argc < 4){
 		fprintf(stderr, "number of process parameter wrong!\n");
 		exit(1);
@@ -28,6 +28,8 @@ int main(int argc, char* argv[]){
 	syscall(334, &start_sec, &start_nsec);
 	for(int t = 0; t < execute_time; t++){
 		execute_unit_time();
+		//if(t % 100 == 0)
+			//fprintf(stderr, "process %s executing...\n", name);
 	}
 	syscall(334, &end_sec, &end_nsec);
 	syscall(335, pid, start_sec, start_nsec, end_sec, end_nsec);

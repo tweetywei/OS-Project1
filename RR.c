@@ -39,7 +39,7 @@ void run_next_process(){
 		ind_remain_time[next_run] -= 500;
 		temp_item -> idx = next_run;
 		temp_item -> value = ind_remain_time[next_run];
-		fprintf(stderr, "process %d remain time %d\n", temp_item -> idx, temp_item -> value);
+		//fprintf(stderr, "process %d remain time %d\n", temp_item -> idx, temp_item -> value);
 		if(temp_item -> value > 0){
 			enqueue(temp_item, queue);
 			set_priority(child_pid[next_run], PRIORITY_LOW);
@@ -48,8 +48,8 @@ void run_next_process(){
 	}	
 	
 	if(!isEmpty(queue)){
-		fprintf(stderr, "current queue...\n");
-		printQueue(queue);
+		//fprintf(stderr, "current queue...\n");
+		//printQueue(queue);
 		temp_item = peek(queue);
 		dequeue(queue);
 		remaining_time = 500;
@@ -69,7 +69,7 @@ void child_handler(int sig){
   is_running = 0;
   finished++;
   remaining_time = 0;
-  fprintf(stderr, "one process finished!\n");
+  //fprintf(stderr, "one process finished!\n");
   if(finished >= process_number)
 	exit(0);
   run_next_process();
@@ -82,7 +82,7 @@ int main(){
 	process_info = (struct process*)malloc(process_number * sizeof(struct process));
 	ind_remain_time = (int*)malloc(process_number * sizeof(int));
 	queue = initial(process_number);
-	fprintf(stderr, "queue, front = %d, rear = %d, capacity = %d\n", queue -> front, queue -> rear, queue -> capacity);
+	//fprintf(stderr, "queue, front = %d, rear = %d, capacity = %d\n", queue -> front, queue -> rear, queue -> capacity);
 	child_pid = (pid_t*)malloc(process_number * sizeof(pid_t));
 	temp_item = (Item*)malloc(sizeof(Item));
 	for(int i = 0; i < process_number; i++){

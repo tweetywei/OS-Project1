@@ -7,7 +7,7 @@ int left(int i) { return (2*i + 1); }
 int right(int i) { return (2*i + 2); } 
 void insertKey(heap* target_heap, int idx, int value) 
 { 
-    fprintf(stderr, "inserting into heap... idx = %d, value = %d\n", idx, value);
+    //fprintf(stderr, "inserting into heap... idx = %d, value = %d\n", idx, value);
     if (target_heap -> element_number >= target_heap -> capacity) 
     { 
         fprintf(stderr, "larger than %d nodes needed!\n", target_heap -> capacity); 

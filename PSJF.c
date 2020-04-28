@@ -16,9 +16,10 @@ heap_node* heap_array_head;
 int current_t;
 int next_priority_high = -1;
 int remaining_time;
+int second_priority = -1;
 
 void child_will_end(){
-	fprintf(stderr, "receive child signal\n");
+	//fprintf(stderr, "receive child signal from %d\n", next_run);
 	int finished_id = next_run;
 	int expected_t = process_info[finished_id].ready_time + process_info[finished_id].execute_time;
 	while(ready_process < process_number && process_info[ready_process].ready_time < expected_t){
@@ -48,7 +49,7 @@ void child_handler(int sig){
 	}
   }*/
 
-  fprintf(stderr, "one process finished!\n");
+  //fprintf(stderr, "one process finished!\n");
   if(finished >= process_number)
 	exit(0);
   /*int expected_t = process_info[finished_id].ready_time + process_info[finished_id].execute_time;
@@ -85,10 +86,18 @@ void check_increase_priority(){
 		//preemptive!
 		extractMin(&SJF_heap);
 		insertKey(&SJF_heap, next_run, remaining_time);
-		set_priority(child_pid[next_run], PRIORITY_MIDDLE); 
+		set_priority(child_pid[next_run], PRIORITY_LOW); 
 		next_run = min_idx;
 		set_priority(child_pid[next_run], PRIORITY_HIGH); 
 		remaining_time = min_execute_time;
+	}
+	int second_execute_time = SJF_heap.heap_array[0].value;
+	int second_idx = SJF_heap.heap_array[0].idx;
+	if(second_idx != second_priority){
+		if(second_priority >= 0 && second_priority != next_run)
+			set_priority(child_pid[second_priority], PRIORITY_LOW);
+		set_priority(child_pid[second_idx], PRIORITY_MIDDLE);		
+		second_priority = second_idx;
 	}
   }
 }
@@ -98,7 +107,7 @@ void run_next_process(){
 		return;
 	heap_node* smallest = extractMin(&SJF_heap);
 	next_run =  smallest -> idx;
-	fprintf(stderr, "setting next process priority high, idx = %d\n", next_run);
+	//fprintf(stderr, "setting next process priority high, idx = %d\n", next_run);
 	set_priority(child_pid[next_run], PRIORITY_HIGH); 
 	remaining_time =  smallest -> value;
 	is_running = 1;

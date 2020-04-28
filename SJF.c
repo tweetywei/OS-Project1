@@ -17,7 +17,7 @@ int current_t;
 int next_priority_high = -1;
 
 void child_will_end(){
-	fprintf(stderr, "receive child signal\n");
+	//fprintf(stderr, "receive child signal\n");
 	int finished_id = next_run;
 	int expected_t = process_info[finished_id].ready_time + process_info[finished_id].execute_time;
 	while(ready_process < process_number && process_info[ready_process].ready_time < expected_t){
@@ -47,7 +47,7 @@ void child_handler(int sig){
 	}
   }*/
 
-  fprintf(stderr, "one process finished!\n");
+  //fprintf(stderr, "one process finished!\n");
   if(finished >= process_number)
 	exit(0);
   /*int expected_t = process_info[finished_id].ready_time + process_info[finished_id].execute_time;
@@ -72,10 +72,10 @@ void check_increase_priority(){
 	if(temp_next_run != next_priority_high){
 		if(next_priority_high >= 0 && next_priority_high != next_run){
 			set_priority(child_pid[next_priority_high], PRIORITY_LOW);
-			fprintf(stderr, "set idx = %d to PRIORITY_LOW\n", next_priority_high);
+			//fprintf(stderr, "set idx = %d to PRIORITY_LOW\n", next_priority_high);
 		}
 	        set_priority(child_pid[temp_next_run], PRIORITY_MIDDLE);  
-		fprintf(stderr, "set idx = %d to PRIORITY_MIDDLE\n", temp_next_run);
+		//fprintf(stderr, "set idx = %d to PRIORITY_MIDDLE\n", temp_next_run);
 		next_priority_high = temp_next_run;
 	}
   }
@@ -85,7 +85,7 @@ void run_next_process(){
 	if(finished >= process_number || is_running)
 		return;
 	next_run = extractMin(&SJF_heap) -> idx;
-	fprintf(stderr, "setting next process priority high, idx = %d\n", next_run);
+	//fprintf(stderr, "setting next process priority high, idx = %d\n", next_run);
 	set_priority(child_pid[next_run], PRIORITY_HIGH);  
 	is_running = 1;
 	check_increase_priority();
